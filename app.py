@@ -495,26 +495,31 @@ def unfollow_status():
 def ensure_chromium():
     """Download Chromium if not already installed."""
     import subprocess
-    import sys
+    cache_dir = os.path.expanduser("~/Library/Caches/ms-playwright")
+    has_chromium = (
+        os.path.exists(cache_dir)
+        and any("chromium" in d and "headless" not in d for d in os.listdir(cache_dir))
+    )
+
+    if has_chromium:
+        print("Chromium found.")
+        return
+
+    print("Downloading Chromium (first run only, ~170MB)...")
     try:
         from playwright._impl._driver import compute_driver_executable
         node, cli = compute_driver_executable()
-        # Check if chromium is already installed
-        result = subprocess.run(
-            [node, cli, "install", "--dry-run", "chromium"],
-            capture_output=True, text=True
-        )
-        cache_dir = os.path.expanduser("~/Library/Caches/ms-playwright")
-        if not os.path.exists(cache_dir) or not any("chromium" in d for d in os.listdir(cache_dir) if "headless" not in d):
-            print("Downloading Chromium (first run only, ~170MB)...")
-            subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
-            print("Chromium installed!")
-        else:
-            print("Chromium found.")
+        subprocess.run([node, cli, "install", "chromium"], check=True)
+        print("Chromium installed!")
     except Exception as e:
-        print(f"Warning: Could not verify Chromium: {e}")
-        print("Attempting to install...")
-        subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"])
+        print(f"Error installing Chromium: {e}")
+        # Try with system python as fallback
+        try:
+            subprocess.run(["python3", "-m", "playwright", "install", "chromium"], check=True)
+            print("Chromium installed via system python!")
+        except Exception as e2:
+            print(f"Failed to install Chromium: {e2}")
+            print("Please run: python3 -m playwright install chromium")
 
 
 if __name__ == "__main__":

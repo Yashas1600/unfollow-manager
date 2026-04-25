@@ -38,6 +38,10 @@ async function openBrowser() {
     $(".login-status").textContent = "Browser opened — log into Instagram, then click below.";
     $("#btn-confirm-login").classList.remove("hidden");
     btn.textContent = "Browser Opened";
+  } else {
+    $(".login-status").textContent = "Failed to open browser. Make sure Chromium is installed: python3 -m playwright install chromium";
+    btn.disabled = false;
+    btn.textContent = "Retry";
   }
 }
 
