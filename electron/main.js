@@ -22,18 +22,24 @@ function startBackend() {
   return new Promise((resolve, reject) => {
     const binaryPath = getBackendPath();
 
+    // Set browsers path so Playwright can find bundled Chromium
+    const browsersPath = app.isPackaged
+      ? path.join(process.resourcesPath, "browsers")
+      : path.join(__dirname, "..", "browsers");
+
+    const env = {
+      ...process.env,
+      FLASK_PORT: String(PORT),
+      PLAYWRIGHT_BROWSERS_PATH: browsersPath,
+    };
+
     if (binaryPath) {
       // Production: run the bundled binary
-      backendProcess = spawn(binaryPath, [], {
-        env: { ...process.env, FLASK_PORT: String(PORT) },
-      });
+      backendProcess = spawn(binaryPath, [], { env });
     } else {
       // Dev: run with python
       const appDir = path.join(__dirname, "..");
-      backendProcess = spawn("python3", ["app.py"], {
-        cwd: appDir,
-        env: { ...process.env, FLASK_PORT: String(PORT) },
-      });
+      backendProcess = spawn("python3", ["app.py"], { cwd: appDir, env });
     }
 
     backendProcess.stdout.on("data", (data) => {

@@ -20,6 +20,11 @@
         "from": "../backend_dist/",
         "to": "backend",
         "filter": ["**/*"]
+      },
+      {
+        "from": "../browsers/",
+        "to": "browsers",
+        "filter": ["**/*"]
       }
     ],
     "mac": {
