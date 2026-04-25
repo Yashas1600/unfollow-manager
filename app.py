@@ -492,14 +492,41 @@ def unfollow_status():
 
 # ── Main ────────────────────────────────────────────────────────────────
 
+def ensure_chromium():
+    """Download Chromium if not already installed."""
+    import subprocess
+    import sys
+    try:
+        from playwright._impl._driver import compute_driver_executable
+        node, cli = compute_driver_executable()
+        # Check if chromium is already installed
+        result = subprocess.run(
+            [node, cli, "install", "--dry-run", "chromium"],
+            capture_output=True, text=True
+        )
+        cache_dir = os.path.expanduser("~/Library/Caches/ms-playwright")
+        if not os.path.exists(cache_dir) or not any("chromium" in d for d in os.listdir(cache_dir) if "headless" not in d):
+            print("Downloading Chromium (first run only, ~170MB)...")
+            subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"], check=True)
+            print("Chromium installed!")
+        else:
+            print("Chromium found.")
+    except Exception as e:
+        print(f"Warning: Could not verify Chromium: {e}")
+        print("Attempting to install...")
+        subprocess.run([sys.executable, "-m", "playwright", "install", "chromium"])
+
+
 if __name__ == "__main__":
+    # Ensure Chromium is available
+    ensure_chromium()
+
     # Start Playwright worker thread
     worker = threading.Thread(target=playwright_worker, daemon=True)
     worker.start()
 
     print("=" * 50)
     print("Instagram Unfollow Manager")
-    print("Open http://127.0.0.1:8080 in your browser")
     print("=" * 50)
     port = int(os.environ.get("FLASK_PORT", 8080))
     app.run(debug=False, port=port, host="127.0.0.1")
