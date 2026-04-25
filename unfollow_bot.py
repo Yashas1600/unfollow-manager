@@ -11,7 +11,7 @@ import time
 from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeout
 
 # --- Configuration ---
-IG_USERNAME = "yashas_s22"
+IG_USERNAME = ""  # set your username here
 SCROLL_PAUSE_SECONDS = 3  # wait for new profiles to load after each scroll
 
 
