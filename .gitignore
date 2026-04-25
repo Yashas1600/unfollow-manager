@@ -1,0 +1,27 @@
+# Build artifacts
+dist/
+build/
+backend_dist/
+*.spec
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Node
+electron/node_modules/
+node_modules/
+
+# OS
+.DS_Store
+
+# Debug screenshots
+debug_*.png
+
+# Runtime files
+unfollow_log.csv
+progress.txt
+non_followers.txt
+followers.txt
+following.txt
