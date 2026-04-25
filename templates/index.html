@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>unfollow</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <span class="logo">UF</span>
+      <h1>unfollow-manager</h1>
+      <span class="subtitle">v1.0</span>
+    </div>
+
+    <div class="steps">
+      <div class="step active">Login</div>
+      <div class="step">Scan</div>
+      <div class="step">Review</div>
+      <div class="step">Unfollow</div>
+    </div>
+
+    <div class="card card-login">
+      <div class="card-title">Connect</div>
+      <div class="card-desc">Opens a browser for manual login. Nothing is stored.</div>
+      <button class="btn btn-primary" id="btn-open-browser" onclick="openBrowser()">Open Browser</button>
+      <p class="login-status"></p>
+      <button class="btn btn-primary hidden" id="btn-confirm-login" onclick="confirmLogin()" style="margin-top:8px">Logged In</button>
+    </div>
+
+    <div class="card card-scan hidden">
+      <div class="card-title">Scanning</div>
+      <div class="scan-status">
+        <span class="spinner"></span> Starting...
+      </div>
+    </div>
+
+    <div class="card card-review hidden">
+      <div class="stats">
+        <div class="stat stat-followers">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Followers</div>
+        </div>
+        <div class="stat stat-following">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Following</div>
+        </div>
+        <div class="stat stat-nonfollowers">
+          <div class="stat-number">0</div>
+          <div class="stat-label">Non-mutual</div>
+        </div>
+      </div>
+
+      <div class="list-controls">
+        <span class="meta selected-count">0 selected</span>
+        <div class="btn-group">
+          <button class="btn btn-ghost btn-sm" onclick="selectAll()">All</button>
+          <button class="btn btn-ghost btn-sm" onclick="deselectAll()">None</button>
+        </div>
+      </div>
+
+      <div class="user-list"></div>
+
+      <div class="progress-section hidden">
+        <div class="progress-bar-container">
+          <div class="progress-bar"></div>
+        </div>
+        <p class="progress-text"></p>
+      </div>
+
+      <div class="unfollow-section">
+        <span class="selected-count">0 selected</span>
+        <button class="btn btn-danger" id="btn-unfollow" onclick="startUnfollow()" disabled>Unfollow</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
