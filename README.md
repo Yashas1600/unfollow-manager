@@ -16,6 +16,14 @@ Find and remove Instagram accounts that don't follow you back.
 
 Download the latest release from the [Releases](https://github.com/Yashas1600/unfollow-manager/releases) page.
 
+**Mac users:** After installing, if you see "app is damaged and can't be opened", run this in Terminal:
+
+```bash
+xattr -cr "/Applications/Unfollow Manager.app"
+```
+
+Then open the app normally. This is because the app isn't code-signed with an Apple Developer certificate.
+
 Or build it yourself:
 
 ```bash
