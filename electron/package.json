@@ -1,6 +1,6 @@
 {
   "name": "unfollow-manager",
-  "version": "1.0.0",
+  "version": "1.3.0",
   "description": "Find and remove Instagram accounts that don't follow you back",
   "main": "main.js",
   "scripts": {

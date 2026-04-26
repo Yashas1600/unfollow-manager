@@ -3,6 +3,8 @@ const state = {
   nonFollowers: [],
   selected: new Set(),
   unfollowStatuses: {},
+  originalFollowing: 0,
+  originalNonFollowers: 0,
 };
 
 // ── Elements ──────────────────────────────────────────────────────────
@@ -78,6 +80,8 @@ async function pollScan() {
     // Show stats — use profile counts as the main number
     const profFollowers = data.profile_follower_count || data.followers.length;
     const profFollowing = data.profile_following_count || data.following.length;
+    state.originalFollowing = profFollowing;
+    state.originalNonFollowers = data.non_followers.length;
     $(".stat-followers .stat-number").textContent = profFollowers.toLocaleString();
     $(".stat-following .stat-number").textContent = profFollowing.toLocaleString();
     $(".stat-nonfollowers .stat-number").textContent = data.non_followers.length.toLocaleString();
@@ -174,6 +178,12 @@ function updateSelectedCount() {
   $("#btn-unfollow").disabled = state.selected.size === 0;
 }
 
+function updateLiveStats() {
+  const successCount = Object.values(state.unfollowStatuses).filter(s => s === "success").length;
+  $(".stat-following .stat-number").textContent = (state.originalFollowing - successCount).toLocaleString();
+  $(".stat-nonfollowers .stat-number").textContent = (state.originalNonFollowers - successCount).toLocaleString();
+}
+
 // ── Step 4: Unfollow ──────────────────────────────────────────────────
 
 async function startUnfollow() {
@@ -214,6 +224,8 @@ async function pollUnfollow() {
   $(".progress-bar").style.width = pct + "%";
   $(".progress-text").textContent = `Unfollowed ${data.completed} of ${data.total}`;
 
+  // Update following and non-mutual counts live
+  updateLiveStats();
   renderUserList();
 
   if (data.total > 0 && data.completed >= data.total) {
@@ -233,6 +245,8 @@ function showDoneScreen(completed, total) {
   const skipped = Object.values(state.unfollowStatuses).filter(s => s === "skip").length;
   const successes = Object.values(state.unfollowStatuses).filter(s => s === "success").length;
   const errors = Object.values(state.unfollowStatuses).filter(s => s !== "success" && s !== "skip").length;
+
+  updateLiveStats();
 
   // Show done banner above the list
   $(".progress-bar").style.width = "100%";

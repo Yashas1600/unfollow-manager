@@ -88,7 +88,7 @@ function createWindow() {
     minWidth: 480,
     minHeight: 500,
     title: "Unfollow Manager",
-    titleBarStyle: "hiddenInset",
+    titleBarStyle: "default",
     backgroundColor: "#0a0a0a",
     webPreferences: {
       nodeIntegration: false,

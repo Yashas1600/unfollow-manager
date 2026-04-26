@@ -49,13 +49,9 @@ body {
 }
 
 .header .logo {
-  font-family: 'IBM Plex Mono', monospace;
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--black);
-  background: var(--lime);
-  padding: 3px 7px;
-  letter-spacing: -0.5px;
+  height: 28px;
+  width: auto;
+  object-fit: contain;
 }
 
 .header h1 {
@@ -281,13 +277,13 @@ body {
 .user-item .username a {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
-  color: var(--dim);
+  color: var(--cyan);
   text-decoration: none;
-  transition: color 0.1s;
+  transition: opacity 0.1s;
 }
 
 .user-item .username a:hover {
-  color: var(--cyan);
+  opacity: 0.7;
 }
 
 .user-item .status {
